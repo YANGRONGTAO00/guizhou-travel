@@ -1,0 +1,59 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}{{ spot.name }}｜Каталог достопримечательностей Гуйчжоу{% endblock %}
+
+{% block content %}
+<article class="detail-layout">
+    <section class="detail-hero">
+        {% if spot.image_url %}
+            <img src="{{ spot.image_url }}" alt="Изображение: {{ spot.name }}">
+        {% else %}
+            <div class="detail-placeholder">🏞️</div>
+        {% endif %}
+        <div>
+            <p class="eyebrow">{{ spot.region.name }} · {{ spot.get_category_display }}</p>
+            <h1>{{ spot.name }}</h1>
+            <p>{{ spot.short_description }}</p>
+            <div class="tag-row">
+                {% for feature in spot.features.all %}
+                    <span>{{ feature.icon }} {{ feature.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="info-grid">
+        <div class="info-block">
+            <h2>Основная информация</h2>
+            <table>
+                <tr><th>Адрес</th><td>{{ spot.address }}</td></tr>
+                <tr><th>Билет</th><td>¥{{ spot.ticket_price }}</td></tr>
+                <tr><th>Рейтинг</th><td>{{ spot.rating }} / 5</td></tr>
+                <tr><th>Дата открытия</th><td>{{ spot.opening_date }}</td></tr>
+                <tr><th>Всемирное наследие</th><td>{% if spot.is_world_heritage %}Да{% else %}Нет{% endif %}</td></tr>
+            </table>
+        </div>
+
+        <div class="info-block">
+            <h2>Советы для посещения</h2>
+            {% if spot.profile %}
+                <ul class="tips-list">
+                    <li><strong>Лучший сезон:</strong> {{ spot.profile.best_season }}</li>
+                    <li><strong>Рекомендуемое время:</strong> {{ spot.profile.suggested_hours }} ч.</li>
+                    <li><strong>Транспорт:</strong> {{ spot.profile.transport_tips }}</li>
+                    {% if spot.profile.official_phone %}
+                        <li><strong>Телефон:</strong> {{ spot.profile.official_phone }}</li>
+                    {% endif %}
+                </ul>
+            {% else %}
+                <p>Дополнительной информации пока нет.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <div class="danger-zone">
+        <a class="button secondary" href="{% url 'spot_list' %}">Вернуться к списку</a>
+        <a class="button danger" href="{% url 'spot_delete' spot.pk %}">Удалить это место</a>
+    </div>
+</article>
+{% endblock %}

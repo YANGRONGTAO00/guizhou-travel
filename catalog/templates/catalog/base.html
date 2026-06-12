@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Каталог достопримечательностей Гуйчжоу{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'catalog/css/styles.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <a class="brand" href="{% url 'home' %}">⛰️ Каталог Гуйчжоу</a>
+            <div class="nav-links">
+                <a href="{% url 'home' %}">Главная</a>
+                <a href="{% url 'spot_list' %}">Список мест</a>
+                <a class="nav-cta" href="{% url 'spot_add' %}">Добавить место</a>
+            </div>
+        </nav>
+    </header>
+
+    {% if messages %}
+        <section class="messages" aria-label="Системные сообщения">
+            {% for message in messages %}
+                <p class="message {{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </section>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>Каталог достопримечательностей Гуйчжоу · проект Django с отношениями один-к-одному, один-ко-многим и многие-ко-многим</p>
+    </footer>
+</body>
+</html>

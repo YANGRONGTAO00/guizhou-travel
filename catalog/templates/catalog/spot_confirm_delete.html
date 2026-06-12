@@ -1,0 +1,16 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Удалить место｜Каталог достопримечательностей Гуйчжоу{% endblock %}
+
+{% block content %}
+<section class="confirm-box">
+    <p class="eyebrow">Delete</p>
+    <h1>Удалить «{{ spot.name }}»?</h1>
+    <p>После удаления эта достопримечательность и связанная с ней дополнительная информация будут удалены из базы данных.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="button danger" type="submit">Подтвердить удаление</button>
+        <a class="button secondary" href="{{ spot.get_absolute_url }}">Отмена</a>
+    </form>
+</section>
+{% endblock %}

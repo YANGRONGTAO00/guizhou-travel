@@ -1,0 +1,60 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Список мест｜Каталог достопримечательностей Гуйчжоу{% endblock %}
+
+{% block content %}
+<section class="page-title">
+    <p class="eyebrow">Catalog</p>
+    <h1>Список достопримечательностей Гуйчжоу</h1>
+    <p>Используйте поиск и фильтры по району и типу, затем откройте карточку для просмотра подробной информации.</p>
+</section>
+
+<form class="filter-panel" method="get">
+    <label>
+        Поиск
+        <input type="search" name="q" value="{{ current_q }}" placeholder="Хуангошу, городок, водопад...">
+    </label>
+    <label>
+        Район
+        <select name="region">
+            <option value="">Все районы</option>
+            {% for region in regions %}
+                <option value="{{ region.id }}" {% if current_region == region.id|stringformat:"s" %}selected{% endif %}>
+                    {{ region.name }} ({{ region.spot_total }})
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        Тип
+        <select name="category">
+            <option value="">Все типы</option>
+            {% for value, label in categories %}
+                <option value="{{ value }}" {% if current_category == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <button class="button primary" type="submit">Фильтровать</button>
+    <a class="button ghost" href="{% url 'spot_list' %}">Сбросить</a>
+</form>
+
+<section class="card-grid">
+    {% for spot in spots %}
+        {% include "catalog/partials/spot_card.html" with spot=spot %}
+    {% empty %}
+        <p class="empty">По выбранным условиям ничего не найдено.</p>
+    {% endfor %}
+</section>
+
+{% if is_paginated %}
+    <nav class="pagination" aria-label="Пагинация">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}&q={{ current_q }}&region={{ current_region }}&category={{ current_category }}">Предыдущая</a>
+        {% endif %}
+        <span>Страница {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&q={{ current_q }}&region={{ current_region }}&category={{ current_category }}">Следующая</a>
+        {% endif %}
+    </nav>
+{% endif %}
+{% endblock %}

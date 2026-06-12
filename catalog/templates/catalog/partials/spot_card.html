@@ -1,0 +1,23 @@
+<article class="spot-card">
+    {% if spot.image_url %}
+        <img src="{{ spot.image_url }}" alt="Изображение: {{ spot.name }}">
+    {% else %}
+        <div class="spot-placeholder">🏞️</div>
+    {% endif %}
+    <div class="spot-card-body">
+        <p class="spot-region">{{ spot.region.name }} · {{ spot.get_category_display }}</p>
+        <h3><a href="{{ spot.get_absolute_url }}">{{ spot.name }}</a></h3>
+        <p>{{ spot.short_description|truncatechars:86 }}</p>
+        <div class="tag-row">
+            {% for feature in spot.features.all %}
+                <span>{{ feature.icon }} {{ feature.name }}</span>
+            {% empty %}
+                <span>✨ Особенности не указаны</span>
+            {% endfor %}
+        </div>
+        <div class="card-meta">
+            <strong>Рейтинг {{ spot.rating }}/5</strong>
+            <span>¥{{ spot.ticket_price }}</span>
+        </div>
+    </div>
+</article>

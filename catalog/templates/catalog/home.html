@@ -1,0 +1,54 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Главная｜Каталог достопримечательностей Гуйчжоу{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-text">
+        <p class="eyebrow">Красочный Гуйчжоу · горы и культура</p>
+        <h1>Откройте лучшие достопримечательности Гуйчжоу</h1>
+        <p>
+            Это каталог достопримечательностей Гуйчжоу, созданный на Django. Здесь можно просматривать места,
+            открывать подробную информацию и добавлять новые записи через веб-форму.
+        </p>
+        <div class="hero-actions">
+            <a class="button primary" href="{% url 'spot_list' %}">Смотреть каталог</a>
+            <a class="button secondary" href="{% url 'spot_add' %}">Добавить место</a>
+        </div>
+    </div>
+    <div class="hero-card" aria-label="Иллюстрация достопримечательностей Гуйчжоу">
+        <span class="sun">☀️</span>
+        <span class="mountain">⛰️</span>
+        <span class="water">💧</span>
+        <strong>Guizhou</strong>
+    </div>
+</section>
+
+<section class="stats-grid">
+    <article>
+        <strong>{{ spot_count }}</strong>
+        <span>мест</span>
+    </article>
+    <article>
+        <strong>{{ region_count }}</strong>
+        <span>районов</span>
+    </article>
+    <article>
+        <strong>{{ feature_count }}</strong>
+        <span>особенностей</span>
+    </article>
+</section>
+
+<section class="section-heading">
+    <p class="eyebrow">Рекомендации</p>
+    <h2>Лучшие направления</h2>
+</section>
+
+<section class="card-grid">
+    {% for spot in top_spots %}
+        {% include "catalog/partials/spot_card.html" with spot=spot %}
+    {% empty %}
+        <p class="empty">Пока нет данных. Добавьте первую достопримечательность.</p>
+    {% endfor %}
+</section>
+{% endblock %}
